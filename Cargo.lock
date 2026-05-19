@@ -17,7 +17,6 @@ checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 [[package]]
 name = "quake3-native-vm"
 version = "0.1.0"
-source = "git+https://github.com/robo9k/quake3-native-vm.git#aa8a4800c8531beb6a9a63a67c2b8fdc6b99148c"
 dependencies = [
  "libc",
  "once_cell",
