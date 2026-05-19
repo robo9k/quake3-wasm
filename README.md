@@ -27,7 +27,8 @@ $ wasm-tools print quake3_wasm.wasm -o quake3_wasm.wat
   https://github.com/WebAssembly/tool-conventions/blob/main/BasicCABI.md#:~:text=Varargs  
   https://wingolog.org/archives/2023/03/20/a-world-to-win-webassembly-for-the-rest-of-us#:~:text=Scheme%20to%20Wasm%3A%20Varargs
 - Quake 3 .map files could be used as debug info  
-  https://github.com/WebAssembly/tool-conventions/blob/main/Debugging.md
+  https://github.com/WebAssembly/tool-conventions/blob/main/Debugging.md  
+  https://github.com/robo9k/quake3-qvm/blob/master/assets/ioq3/baseq3/vm/qagame.map
 - There is a limited Wasm feature subset that even embedded runtimes might implement  
   https://github.com/WebAssembly/tool-conventions/blob/main/Lime.md  
   Which might make sense for a "Quake 3 QVM" .. target? Remember the Dreamcast
