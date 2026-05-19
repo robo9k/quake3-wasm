@@ -47,6 +47,8 @@ $ wasm-tools print quake3_wasm.wasm -o quake3_wasm.wat
   Use a `global` / `table` for syscall fn pointer?
 - Build a playground CLI with Wasmtime  
   https://docs.wasmtime.dev/examples-hello-world.html
-- Eventually build a native Quake 3 module akin to https://github.com/robo9k/q3py/
+- Eventually build a native Quake 3 module akin to https://github.com/robo9k/q3py/  
+  Which needs something similar to the hardcoded `VMA()` in e.g. `SV_GameSystemCalls` to convert pointer args into Wasm memories pointers  
+  The other way with `VM_Call()` does not pass pointers
 - Build a .qvm to .wasm `qvm2wasm` .. transpiler?
 - Ideally the native module would work both for .wasm built directly from C / Rust and `qvm2wasm` alike
