@@ -1,14 +1,52 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use quake3_native_vm::NativeVM;
+use quake3_native_vm::Syscall;
+use quake3_native_vm::ffi;
+use quake3_native_vm::native_vm;
+use std::ffi::CString;
+
+struct HelloQuake3 {
+    syscall: Syscall,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+/// See [ioquake3's `game/g_public.h`](https://github.com/ioquake/ioq3/blob/master/code/game/g_public.h)
+const G_ERROR: ffi::intptr_t = 1;
+const GAME_INIT: ffi::c_int = 0;
+const GAME_SHUTDOWN: ffi::c_int = 1;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+impl NativeVM for HelloQuake3 {
+    fn dll_entry(syscall: Syscall) -> Box<HelloQuake3> {
+        Box::new(HelloQuake3 { syscall })
+    }
+
+    fn vm_main(
+        &self,
+        command: ffi::c_int,
+        _arg0: ffi::c_int,
+        _arg1: ffi::c_int,
+        _arg2: ffi::c_int,
+        _arg3: ffi::c_int,
+        _arg4: ffi::c_int,
+        _arg5: ffi::c_int,
+        _arg6: ffi::c_int,
+        _arg7: ffi::c_int,
+        _arg8: ffi::c_int,
+        _arg9: ffi::c_int,
+        _arg10: ffi::c_int,
+        _arg11: ffi::c_int,
+    ) -> ffi::intptr_t {
+        match command {
+            GAME_INIT => {
+                let msg = CString::new("Hello, World!").unwrap();
+                (self.syscall)(G_ERROR, msg.as_ptr());
+                unreachable!()
+            }
+            GAME_SHUTDOWN => {
+                // Just return a dummy value here for clean shutdown
+                0
+            }
+            _ => panic!("Game command not implemented"),
+        }
     }
 }
+
+native_vm!(HelloQuake3);
