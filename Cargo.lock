@@ -27,6 +27,7 @@ dependencies = [
 name = "quake3-wasm"
 version = "0.1.0"
 dependencies = [
+ "libc",
  "once_cell",
  "quake3-native-vm",
 ]
