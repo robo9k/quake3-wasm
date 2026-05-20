@@ -6,6 +6,18 @@ $ wasm-tools print native.wasm -o native.wat
 
 $ wasm-tools demangle target/wasm32-unknown-unknown/release/naive.wasm -o naive.wasm
 $ wasm-tools print naive.wasm -o naive.wat
+
+$ clang \
+   --target=wasm32 \
+   -O3 \
+   -flto \
+   -nostdlib \
+   -Wl,--no-entry \
+   -Wl,--export-all \
+   -Wl,--lto-O3 \
+   -o c.wasm \
+   c/{g_main,g_syscalls}.c
+$ wasm-tools print c.wasm -o c.wat
 ```
 
 ## NOTEs
@@ -29,7 +41,12 @@ $ wasm-tools print naive.wasm -o naive.wat
   ```
 - Wasm does not have C varargs  
   https://github.com/WebAssembly/tool-conventions/blob/main/BasicCABI.md#:~:text=Varargs  
-  https://wingolog.org/archives/2023/03/20/a-world-to-win-webassembly-for-the-rest-of-us#:~:text=Scheme%20to%20Wasm%3A%20Varargs
+  https://wingolog.org/archives/2023/03/20/a-world-to-win-webassembly-for-the-rest-of-us#:~:text=Scheme%20to%20Wasm%3A%20Varargs  
+  C and Rust agree on `syscall` fn being:
+  ```wat
+  (type (;0;) (func (param i32 i32) (result i32)))
+  ```
+  However I do not understand the stack params yet
 - Quake 3 .map files could be used as debug info  
   https://github.com/WebAssembly/tool-conventions/blob/main/Debugging.md  
   https://github.com/robo9k/quake3-qvm/blob/master/assets/ioq3/baseq3/vm/qagame.map
@@ -40,7 +57,7 @@ $ wasm-tools print naive.wasm -o naive.wat
 
 ## TODOs
 
-- [ ] Build .wasm from C  
+- [x] Build .wasm from C  
       https://github.com/robo9k/quake3-qvm/blob/master/assets/mod-syscall.c
 - [x] Build .wasm from simpler (unsafe) Rust  
       https://github.com/robo9k/q3hi.rs
