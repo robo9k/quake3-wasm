@@ -63,7 +63,7 @@ pub extern "C" fn vmMain(
         GAME_INIT => {
             let msg = c"Hello, World!";
             unsafe {
-                let syscall = SYSCALL.get().unwrap();
+                let syscall = SYSCALL.get().unwrap_unchecked();
                 syscall(G_ERROR, msg.as_ptr());
             }
             unreachable!()
