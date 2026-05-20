@@ -44,7 +44,7 @@ $ wasm-tools print naive.wasm -o naive.wat
       https://github.com/robo9k/quake3-qvm/blob/master/assets/mod-syscall.c
 - [x] Build .wasm from simpler (unsafe) Rust  
       https://github.com/robo9k/q3hi.rs
-- [ ] Build with panic=abort
+- [x] Build with panic=abort
 - [ ] Build with `CStr` and no allocation
 - [ ] Build hand-made .wat Hello World  
       Export one memories (data, LIT, BSS)  

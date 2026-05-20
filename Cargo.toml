@@ -1,3 +1,6 @@
+[profile.dev]
+panic = "abort"
+
 [workspace]
 resolver = "3"
 members =[
