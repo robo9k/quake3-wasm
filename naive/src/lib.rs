@@ -1,4 +1,4 @@
-use std::{cell::UnsafeCell, ffi::CString};
+use std::cell::UnsafeCell;
 
 use i32 as c_int;
 use isize as intptr_t;
@@ -53,7 +53,7 @@ pub extern "C" fn vmMain(
 ) -> intptr_t {
     match command {
         GAME_INIT => {
-            let msg = CString::new("Hello, World!").unwrap();
+            let msg = c"Hello, World!";
             unsafe {
                 let syscall = SYSCALL.get().unwrap();
                 syscall(G_ERROR, msg.as_ptr());
