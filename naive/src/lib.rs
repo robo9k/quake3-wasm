@@ -1,4 +1,12 @@
-use std::cell::UnsafeCell;
+#![no_std]
+
+#[cfg(not(test))]
+#[panic_handler]
+fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
+    core::arch::wasm32::unreachable()
+}
+
+use core::cell::UnsafeCell;
 
 use i32 as c_int;
 use isize as intptr_t;
@@ -64,7 +72,7 @@ pub extern "C" fn vmMain(
             // Just return a dummy value here for clean shutdown
             0
         }
-        _ => panic!("Game command not implemented"),
+        _ => panic!(),
     }
 }
 
