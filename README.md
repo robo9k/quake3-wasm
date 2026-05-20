@@ -1,10 +1,10 @@
 ```terminal
-$ cargo build
+$ cargo build --release
 
-$ wasm-tools demangle target/wasm32-unknown-unknown/debug/native.wasm -o native.wasm
+$ wasm-tools demangle target/wasm32-unknown-unknown/release/native.wasm -o native.wasm
 $ wasm-tools print native.wasm -o native.wat
 
-$ wasm-tools demangle target/wasm32-unknown-unknown/debug/naive.wasm -o naive.wasm
+$ wasm-tools demangle target/wasm32-unknown-unknown/release/naive.wasm -o naive.wasm
 $ wasm-tools print naive.wasm -o naive.wat
 ```
 
@@ -46,7 +46,8 @@ $ wasm-tools print naive.wasm -o naive.wat
       https://github.com/robo9k/q3hi.rs
 - [x] Build with panic=abort
 - [x] Build with `CStr` and no allocation
-- [ ] Build as `no_std`
+- [x] Build as `no_std`
+- [x] Build with --release
 - [ ] Build hand-made .wat Hello World  
       Export one memories (data, LIT, BSS)  
       Export functions `dllEntry`, `vmMain`  

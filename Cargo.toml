@@ -1,4 +1,4 @@
-[profile.dev]
+[profile.release]
 panic = "unwind"
 
 [workspace]
