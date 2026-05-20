@@ -1,7 +1,11 @@
 ```terminal
 $ cargo build
-$ wasm-tools demangle target/wasm32-unknown-unknown/debug/quake3_wasm.wasm -o quake3_wasm.wasm
-$ wasm-tools print quake3_wasm.wasm -o quake3_wasm.wat
+
+$ wasm-tools demangle target/wasm32-unknown-unknown/debug/native.wasm -o native.wasm
+$ wasm-tools print native.wasm -o native.wat
+
+$ wasm-tools demangle target/wasm32-unknown-unknown/debug/naive.wasm -o naive.wasm
+$ wasm-tools print naive.wasm -o naive.wat
 ```
 
 ## NOTEs
@@ -36,19 +40,20 @@ $ wasm-tools print quake3_wasm.wasm -o quake3_wasm.wat
 
 ## TODOs
 
-- Build .wasm from C  
-  https://github.com/robo9k/quake3-qvm/blob/master/assets/mod-syscall.c
-- Build .wasm from simpler (unsafe) Rust  
-  https://github.com/robo9k/q3hi.rs
-- Build `quake3-native-vm::native_vm!` with panic=abort
-- Build hand-made .wat Hello World  
-  Export one memories (data, LIT, BSS)  
-  Export functions `dllEntry`, `vmMain`  
-  Use a `global` / `table` for syscall fn pointer?
-- Build a playground CLI with Wasmtime  
-  https://docs.wasmtime.dev/examples-hello-world.html
-- Eventually build a native Quake 3 module akin to https://github.com/robo9k/q3py/  
-  Which needs something similar to the hardcoded `VMA()` in e.g. `SV_GameSystemCalls` to convert pointer args into Wasm memories pointers  
-  The other way with `VM_Call()` does not pass pointers
-- Build a .qvm to .wasm `qvm2wasm` .. transpiler?
-- Ideally the native module would work both for .wasm built directly from C / Rust and `qvm2wasm` alike
+- [ ] Build .wasm from C  
+      https://github.com/robo9k/quake3-qvm/blob/master/assets/mod-syscall.c
+- [x] Build .wasm from simpler (unsafe) Rust  
+      https://github.com/robo9k/q3hi.rs
+- [ ] Build with panic=abort
+- [ ] Build with `CStr` and no allocation
+- [ ] Build hand-made .wat Hello World  
+      Export one memories (data, LIT, BSS)  
+      Export functions `dllEntry`, `vmMain`  
+      Use a `global` / `table` for syscall fn pointer?
+- [ ] Build a playground CLI with Wasmtime  
+      https://docs.wasmtime.dev/examples-hello-world.html
+- [ ] Eventually build a native Quake 3 module akin to https://github.com/robo9k/q3py/  
+      Which needs something similar to the hardcoded `VMA()` in e.g. `SV_GameSystemCalls` to convert pointer args into Wasm memories pointers  
+      The other way with `VM_Call()` does not pass pointers
+- [ ] Build a .qvm to .wasm `qvm2wasm` .. transpiler?
+- [ ] Ideally the native module would work both for .wasm built directly from C / Rust and `qvm2wasm` alike
