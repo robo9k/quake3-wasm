@@ -46,7 +46,60 @@ $ wasm-tools print c.wasm -o c.wat
   ```wat
   (type (;0;) (func (param i32 i32) (result i32)))
   ```
-  However I do not understand the stack params yet
+  varargs are passed as a i31/pointer to (stack) array  
+  length is _not_ passed and has to be deduced from args  
+  https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=d7c6f5b641e45a410577d6c15c56a6fb
+  ```rust
+  unsafe extern "C" { fn foo(...); }
+
+  #[unsafe(no_mangle)]
+  pub extern "C" fn bar() {
+      unsafe { foo(1, 2, 3, 4); }
+  }
+  ```
+  ```wat
+  (type (;0;) (func (param i32)))
+  (import "env" "foo" (func $foo (;0;) (type 0)))
+  (func $bar (;1;) (type 1)
+    (local i32)
+
+    global.get $__stack_pointer
+    i32.const 16
+    i32.sub
+    local.set 0
+    local.get 0
+    global.set $__stack_pointer
+
+    local.get 0
+    i32.const 4
+    i32.store offset=12
+
+    local.get 0
+    i32.const 3
+    i32.store offset=8
+
+    local.get 0
+    i32.const 2
+    i32.store offset=4
+
+    local.get 0
+    i32.const 1
+    i32.store
+
+    local.get 0
+
+    call $foo
+
+    local.get 0
+    i32.const 16
+    i32.add
+    global.set $__stack_pointer
+    return
+  )
+  ```
+  https://doc.rust-lang.org/beta/unstable-book/language-features/c-variadic.html  
+  Luckily we do not need to export a vararg fn, just pass-through a pointer  
+  We need to handle each syscall, see VMA() note further below
 - Quake 3 .map files could be used as debug info  
   https://github.com/WebAssembly/tool-conventions/blob/main/Debugging.md  
   https://github.com/robo9k/quake3-qvm/blob/master/assets/ioq3/baseq3/vm/qagame.map
