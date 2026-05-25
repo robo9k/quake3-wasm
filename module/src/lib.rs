@@ -34,20 +34,17 @@ pub fn dll_entry(/*syscall: Syscall*/) -> wasmtime::Result<()> {
 
     let module = Module::from_file(&engine, "c.wat")?;
 
-    let linker = Linker::new(&engine);
+    let mut linker = Linker::new(&engine);
+    linker.func_wrap("env", "syscall", |arg: i32, args: i32| -> i32 {
+        // TODO: depending on `arg`, get arguments from instance memory, convert references
+        println!("arg={}", arg);
+        println!("args={}", args);
+        0
+    })?;
 
     let mut store: Store<() /*Syscall*/> = Store::new(&engine, () /*syscall*/);
 
     let instance = linker.instantiate(&mut store, &module)?;
-
-    let wrapped_syscall = Func::wrap(&mut store, |arg: i32, args: u32| {
-        // TODO: depending on `arg`, get arguments from instance memory, convert references
-        println!("arg={}", arg);
-        println!("args={}", args);
-    });
-
-    let dll_entry = instance.get_typed_func::<Func, ()>(&mut store, "dllEntry")?;
-    dll_entry.call(&mut store, wrapped_syscall)?;
 
     let vm_main = instance.get_typed_func::<(
         i32,
@@ -65,11 +62,13 @@ pub fn dll_entry(/*syscall: Syscall*/) -> wasmtime::Result<()> {
         i32,
     ), i32>(&mut store, "vmMain")?;
 
+    vm_main.call(&mut store, (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))?;
+
     let mut VM_IMPL = _VM_IMPL.write().unwrap();
     *VM_IMPL = Some(State { store, vm_main });
 
-    println!("executable path: {:?}", process_path::get_executable_path());
-    println!("dylib path: {:?}", process_path::get_dylib_path());
+    //println!("executable path: {:?}", process_path::get_executable_path());
+    //println!("dylib path: {:?}", process_path::get_dylib_path());
 
     Ok(())
 }
