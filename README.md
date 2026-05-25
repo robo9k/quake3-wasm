@@ -100,6 +100,7 @@ $ wasm-tools print c.wasm -o c.wat
   https://doc.rust-lang.org/beta/unstable-book/language-features/c-variadic.html  
   Luckily we do not need to export a vararg fn, just pass-through a pointer  
   We need to handle each syscall, see VMA() note further below
+- C/Rust do not properly use Wasm `funcref` for syscall pointer, plain i32 does not work for host functions
 - Quake 3 .map files could be used as debug info  
   https://github.com/WebAssembly/tool-conventions/blob/main/Debugging.md  
   https://github.com/robo9k/quake3-qvm/blob/master/assets/ioq3/baseq3/vm/qagame.map

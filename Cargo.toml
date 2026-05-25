@@ -4,6 +4,8 @@ panic = "unwind"
 [workspace]
 resolver = "3"
 members =[
-    "naive",
+    "driver",
+    "module",
+    #"naive",
     "native",
 ]
