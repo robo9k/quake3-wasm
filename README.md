@@ -9,11 +9,12 @@ $ wasm-tools print naive.wasm -o naive.wat
 
 $ clang \
    --target=wasm32 \
+   -fvisibility=hidden \
    -O3 \
    -flto \
    -nostdlib \
    -Wl,--no-entry \
-   -Wl,--export-all \
+   -Wl,--export-dynamic \
    -Wl,--lto-O3 \
    -o c.wasm \
    c/{g_main,g_syscalls}.c
